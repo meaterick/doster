@@ -1,0 +1,522 @@
+{
+  "schema": 1,
+  "reviewed_from": "3ec0d60477fb6f665d9da543ee94fbede52afd6e",
+  "notice": "Reviewed web exports only. A checksum records an approval; it does not detect a watermark. Inspect every new or changed photograph and guard visually before updating its record. Never regenerate this list blindly.",
+  "assets": {
+    "images/about.webp": {
+      "sha256": "006bc79c79f1139902b514972e5c63d53a6a07964dede8c8bf121b0514d1c12c",
+      "width": 2560,
+      "height": 2048
+    },
+    "images/daily/photo01.webp": {
+      "sha256": "d3be7b851aee0099e91d0f35fe681b5a226129398164bb7541036f74d308fd0e",
+      "width": 3000,
+      "height": 1989
+    },
+    "images/daily/photo02.webp": {
+      "sha256": "d016df1064bd9d680178c13d94a0404bd1d1b94297995ef907df5ab8a38d6067",
+      "width": 2024,
+      "height": 3000
+    },
+    "images/daily/photo03.webp": {
+      "sha256": "3eed00d2516355dba98b0d9c79e6d3a5ac9957a76a6c0cff2d23a33e476f3d9b",
+      "width": 2447,
+      "height": 3000
+    },
+    "images/daily/photo04.webp": {
+      "sha256": "a7f6b51fb378ede6fe64d131b3819ea6201b4df67315a6ccf558bd18e37b18fd",
+      "width": 2048,
+      "height": 2560
+    },
+    "images/daily/photo05.webp": {
+      "sha256": "be0db3585d69df3a64157f274c9c1292c8e919147d617df2b8c9b11061a2afa8",
+      "width": 1989,
+      "height": 3000
+    },
+    "images/daily/photo06.webp": {
+      "sha256": "6747e3267349e8acb8331afa39d4448e2abd51e6c6c2458ec9f6073e4de9b889",
+      "width": 2985,
+      "height": 1979
+    },
+    "images/experimental/photo01.webp": {
+      "sha256": "9ea3bab163336d851a834b5740355bf544d655842ede112a59dd24c81ace9c43",
+      "width": 3000,
+      "height": 2250
+    },
+    "images/experimental/photo02.webp": {
+      "sha256": "315a9e9cae70a369e78cc873ddb4d399f18f5b1bae8a7606d20a864856e844d5",
+      "width": 2005,
+      "height": 2506
+    },
+    "images/experimental/photo03.webp": {
+      "sha256": "db333512637467c57478c80edd9e7f122092d91902ffaafaad2034a8a1fda333",
+      "width": 1989,
+      "height": 3000
+    },
+    "images/experimental/photo04.webp": {
+      "sha256": "c4926cb33cbab26499b67487638517715051fb60e30832ee39ca36b2830d26ae",
+      "width": 2005,
+      "height": 2506
+    },
+    "images/experimental/photo05.webp": {
+      "sha256": "47e27493c3d01a85f3ace936952dee25c5e825ef895155eecc77a369bbfe18cc",
+      "width": 2000,
+      "height": 3000
+    },
+    "images/film/photo01.webp": {
+      "sha256": "8cbf7aeac0a6735ed6d97988901fa5d2b826f8971f9c1368a5ae889e3e2ea81b",
+      "width": 3000,
+      "height": 1989
+    },
+    "images/film/photo02.webp": {
+      "sha256": "7445c482145977540e080325d075f88f0a9ec71b38a206d1d5581620729e31fa",
+      "width": 1990,
+      "height": 3000
+    },
+    "images/film/photo03.webp": {
+      "sha256": "de1847b4a41c54b6348a2967058a49ffa0db3899fe0bee1dc770bcecf7b9613b",
+      "width": 3000,
+      "height": 2448
+    },
+    "images/film/photo04-nt.webp": {
+      "sha256": "663292ce4646650bdecc46afb6932036536616c1da7366aa146728825fab2e03",
+      "width": 3000,
+      "height": 1518
+    },
+    "images/film/photo04.webp": {
+      "sha256": "be052741c6b87a8b5a97230e8e24ebc65d4328f9f3af43677e1bfa6f643c4340",
+      "width": 3000,
+      "height": 1529
+    },
+    "images/film/photo05.webp": {
+      "sha256": "a387325247567ce8ae68ad879ebe893142cd200b3aaa22d05e6ee4f161d05665",
+      "width": 2941,
+      "height": 1960
+    },
+    "images/film/photo06.webp": {
+      "sha256": "b8b651db8e5996878332c5f70ce7f3f4d628c1d1ae86b86028303c96919c605d",
+      "width": 2048,
+      "height": 2560
+    },
+    "images/film/photo07.webp": {
+      "sha256": "2034f39b1f891303c0db8f141685441864b25f69fa18887758b207e39b25f4f0",
+      "width": 1989,
+      "height": 3000
+    },
+    "images/gallery/about.webp": {
+      "sha256": "e4a0147180d954e6a4bc678ca5e471d724401ddc9e6ee1cf29ceda3c06b2fd67",
+      "width": 1280,
+      "height": 1024
+    },
+    "images/gallery/daily/photo01.webp": {
+      "sha256": "6323a7eeff0bf003845ed6a1f78661da3d82cad7d29b8d6d9a7202a51e10f93c",
+      "width": 1024,
+      "height": 679
+    },
+    "images/gallery/daily/photo02.webp": {
+      "sha256": "21f061ec1085691bed883c3776023a5ac306e1bd4c1e730cd2bacad7a160b748",
+      "width": 691,
+      "height": 1024
+    },
+    "images/gallery/daily/photo03.webp": {
+      "sha256": "544359b1509c182091ef2aaa4da83f6266032df1016a7bc9cd777a543a290859",
+      "width": 835,
+      "height": 1024
+    },
+    "images/gallery/daily/photo04.webp": {
+      "sha256": "0a484afcc401d3feea5386b347cdf0097adf95cf6cd12aede70db2d8f724cef9",
+      "width": 819,
+      "height": 1024
+    },
+    "images/gallery/daily/photo05.webp": {
+      "sha256": "61cd803e5c93a77cdde4dae1e7fc73c305e924102e32cf379877d1d07fa7a6dc",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/daily/photo06.webp": {
+      "sha256": "01341bf706636cc518d50b82f2cbc7bfce8d9fa4beec5872927c5fdf9e3b1ed1",
+      "width": 1024,
+      "height": 679
+    },
+    "images/gallery/experimental/photo01.webp": {
+      "sha256": "97e67983c6bb3a9711ec2b885751ed54f2cb03f692d223648e19b02cb5e4ba77",
+      "width": 2048,
+      "height": 1536
+    },
+    "images/gallery/experimental/photo02.webp": {
+      "sha256": "e620b8cacd99d1aae23a907bfc59dbf62fe4e037ed1670734e14a1ab5c1df0c0",
+      "width": 819,
+      "height": 1024
+    },
+    "images/gallery/experimental/photo03.webp": {
+      "sha256": "5f0999bd366250487e9d869dd6daf7eaf56dd22b0f854932d535113a2f1d6b11",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/experimental/photo04.webp": {
+      "sha256": "5fc066abee9dfa153ff112a16b5953e90c98c876d99230bedb7c9622660029c0",
+      "width": 819,
+      "height": 1024
+    },
+    "images/gallery/experimental/photo05.webp": {
+      "sha256": "b1a1984671e2c91c388ff8d2925bcb2768518915d495b40aa0e59ae3d57049c7",
+      "width": 1365,
+      "height": 2048
+    },
+    "images/gallery/film/photo01.webp": {
+      "sha256": "b560470e19cd325e5a1b15a335ab076ac2d5fc0f71d7d5751ac79ed5ec98cb04",
+      "width": 1024,
+      "height": 679
+    },
+    "images/gallery/film/photo02.webp": {
+      "sha256": "7ceaeb5d4b68854d3d3e5f2eb5e16ffe28b2c6d5b0f077a1713409a60804dc45",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/film/photo03.webp": {
+      "sha256": "a8eeb25d637fc7ad1ed71be9c6ca27f6d16083016ac9ed85b8efb67a656bb108",
+      "width": 1024,
+      "height": 836
+    },
+    "images/gallery/film/photo04.webp": {
+      "sha256": "b6e2d74c0cf4c246846d729a9d3cb37e85b3d66ab7a49d02b1f700f3d280021d",
+      "width": 2048,
+      "height": 1044
+    },
+    "images/gallery/film/photo05.webp": {
+      "sha256": "f9ea715d2e4889774a4424d965504a6cb22020ea770f33cfba0d9eff49597908",
+      "width": 1024,
+      "height": 682
+    },
+    "images/gallery/film/photo06.webp": {
+      "sha256": "00f05817f92b3d25382ff9a2b552b4813c641707d6db35fc80c1075f17676a1d",
+      "width": 819,
+      "height": 1024
+    },
+    "images/gallery/film/photo07.webp": {
+      "sha256": "c998a442327a85f97392ad33cf8b683f1908f50e4e21bd1a95e72c6e337f6a18",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/hero-wall.webp": {
+      "sha256": "1bb65f7859cc5b5226f9b350fe21f37805499d80359d3cd823f3bb3bf73ee296",
+      "width": 2048,
+      "height": 1670
+    },
+    "images/gallery/people/photo01.webp": {
+      "sha256": "559bb45ba92718d6a6680179886b645692d3597cc7614b326816811e0a1952cb",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/people/photo02.webp": {
+      "sha256": "3dff21254317a558ad3d5f29bc8e44f246a738d80e97324cfe9777582ca69a61",
+      "width": 819,
+      "height": 1024
+    },
+    "images/gallery/people/photo03.webp": {
+      "sha256": "a124b9fb59abed3883352025275524160094ce6123bcb12964fae63b1e68ca93",
+      "width": 819,
+      "height": 1024
+    },
+    "images/gallery/people/photo04.webp": {
+      "sha256": "e57c1f549772e745f32edc314851e15a23af26cd19c70c20872b62199b69cb74",
+      "width": 1024,
+      "height": 679
+    },
+    "images/gallery/people/photo05.webp": {
+      "sha256": "cde26fdc4a744a248ac46a134a3bd55d8701d45292c0c67630a998d5ba7a038d",
+      "width": 688,
+      "height": 1024
+    },
+    "images/gallery/people/photo06.webp": {
+      "sha256": "0877c4db84d9dbaa2b7dca7512c22a93b497302332e817a3f4619769557e7195",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/portrait/photo01.webp": {
+      "sha256": "305ea2d2c8e8f879cf8edb24d56ed267129116b1467af6051b1efa7bde9b6ca6",
+      "width": 835,
+      "height": 1024
+    },
+    "images/gallery/portrait/photo02.webp": {
+      "sha256": "66d516d542fcf75ff75ead68bc48169171450bea0854c82835bfa827d920e0bb",
+      "width": 880,
+      "height": 1024
+    },
+    "images/gallery/portrait/photo03.webp": {
+      "sha256": "dd7059ebe949df579805f40e8b53a6c730a5328108f4891e1eabc38b429d292f",
+      "width": 679,
+      "height": 1024
+    },
+    "images/gallery/portrait/photo04.webp": {
+      "sha256": "f24ec81ca9087248832904e8b6b5e9a4c802fe9d2a5f8c1324027f2ac5fc4486",
+      "width": 689,
+      "height": 1024
+    },
+    "images/gallery/portrait/photo05.webp": {
+      "sha256": "dbceefef16f6331aa6989f14f90e1fd0a6602a99347ce2e8464fcca70175129b",
+      "width": 690,
+      "height": 1024
+    },
+    "images/gallery/portrait/photo06.webp": {
+      "sha256": "2df8a7b6bb64a54afc45e4fce5d7f6fce98db8059c3813e90b82a319491030a3",
+      "width": 1024,
+      "height": 688
+    },
+    "images/gallery/portrait/photo07.webp": {
+      "sha256": "1eff46df83193ec827c6a558b37bfac4403b4999717fc9a902d6a4f01a36b477",
+      "width": 693,
+      "height": 1024
+    },
+    "images/guard/about.webp": {
+      "sha256": "b4fea5a2feb854d19cbead1220664643a0ab0d37ad1da0b261462c50b89b34eb",
+      "width": 360,
+      "height": 288
+    },
+    "images/guard/daily/photo01.webp": {
+      "sha256": "52b10b9f4f3458679e3d6d781a74b3315298556bbf125974dd8f78fc903e9210",
+      "width": 360,
+      "height": 239
+    },
+    "images/guard/daily/photo02.webp": {
+      "sha256": "a40cbe7d5e81926166050227ae8703b781b24ac47fbeaef2042282402ab52a43",
+      "width": 243,
+      "height": 360
+    },
+    "images/guard/daily/photo03.webp": {
+      "sha256": "f89fbdca317deb19620ca91882a10e7a0be528a1ced7a6cba8767257950fdb33",
+      "width": 294,
+      "height": 360
+    },
+    "images/guard/daily/photo04.webp": {
+      "sha256": "89116b77eff9a0623e1686894e9caf3c142e490825b138873525a8a171b12a62",
+      "width": 288,
+      "height": 360
+    },
+    "images/guard/daily/photo05.webp": {
+      "sha256": "69c1579e206acdc255d657bc8f02ec833ef4002015aa759c1c8898d1d4123609",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/daily/photo06.webp": {
+      "sha256": "8646ec114ccda305148ce0f7af676975c7cdec428328592e39b30d3b1ace89df",
+      "width": 360,
+      "height": 239
+    },
+    "images/guard/experimental/photo01.webp": {
+      "sha256": "3214932c27878fe6f4a880aed1b1f401535014af8254ee11843e3aed48980494",
+      "width": 360,
+      "height": 270
+    },
+    "images/guard/experimental/photo02.webp": {
+      "sha256": "ab0a7d94c538ed58f1da7bcafef60fd9686202a3b76efa1b62c95dd6617ceb40",
+      "width": 288,
+      "height": 360
+    },
+    "images/guard/experimental/photo03.webp": {
+      "sha256": "bc1fb7892174c8f0ff4631e07fb7aa08d82d84f9b7fc17e0e5586dc44477451c",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/experimental/photo04.webp": {
+      "sha256": "3885109333222dcf470fe382689fa7fdcc98ca3687a18583ae41247d5fff8f9a",
+      "width": 288,
+      "height": 360
+    },
+    "images/guard/experimental/photo05.webp": {
+      "sha256": "d3c211fe22bbdbb8a0603c7b741ab90af721c75e0ea60312aea28eba51ffa13a",
+      "width": 240,
+      "height": 360
+    },
+    "images/guard/film/photo01.webp": {
+      "sha256": "529e7cce7fbfd86bba9f56ec6dde9de268df31b2d2f10fe8560ea038495ead83",
+      "width": 360,
+      "height": 239
+    },
+    "images/guard/film/photo02.webp": {
+      "sha256": "0c8cd4bb3fcb11104e68759c96905927a1ff15de41a1e7998dbe12880ab3d0c7",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/film/photo03.webp": {
+      "sha256": "ae6ba1b4f958d755cad0372de6050fee0e1b85dfa753607954806c4626f38dc0",
+      "width": 360,
+      "height": 294
+    },
+    "images/guard/film/photo04-nt.webp": {
+      "sha256": "0a6add50b4edef3fe45e1042f6cf903da2373df4b9827492cbc12abd9ccf1da6",
+      "width": 360,
+      "height": 182
+    },
+    "images/guard/film/photo04.webp": {
+      "sha256": "343f440a56d0e329984a84afa73ff3f2be0bc92991fac22b34c6a1fffbbb3ad2",
+      "width": 360,
+      "height": 183
+    },
+    "images/guard/film/photo05.webp": {
+      "sha256": "03008142e1486fdcc246508fd3dbdf69026d32cc94d08736c602a85e32d07e90",
+      "width": 360,
+      "height": 240
+    },
+    "images/guard/film/photo06.webp": {
+      "sha256": "33e8afe5676f206fda61945772a200c4a4e1ecc68037135178c0b8d873077eb1",
+      "width": 288,
+      "height": 360
+    },
+    "images/guard/film/photo07.webp": {
+      "sha256": "166cc80488979f7190a880f7f5a4f7354d37ffdbc4fdd52a4fa94aa0acde42b5",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/hero.webp": {
+      "sha256": "b5e7c240c46dbbe52b32be27a14f6333c9953638c14fefd20ec2e30c5ac6410d",
+      "width": 360,
+      "height": 294
+    },
+    "images/guard/people/photo01.webp": {
+      "sha256": "080edb4452047186212a88c00bd2b8a3303b0efef33fce83b792b568bb7cf556",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/people/photo02.webp": {
+      "sha256": "9b14b5d92ce354ca0644c7ebad01a6066474c916a8eb2e2ca3226ca888884c81",
+      "width": 288,
+      "height": 360
+    },
+    "images/guard/people/photo03.webp": {
+      "sha256": "55c3d742d29bb1487c8ca6c62cf71d51dab7155fe810d0e3d9dabe9160d80b67",
+      "width": 288,
+      "height": 360
+    },
+    "images/guard/people/photo04.webp": {
+      "sha256": "aa82b844d0a1b97680c10c6dbaa36d713aab9e2621a75b757ee1f6adb25a53a9",
+      "width": 360,
+      "height": 239
+    },
+    "images/guard/people/photo05.webp": {
+      "sha256": "52ebafe375f4ce7b3ed12e785f2aca936209f991280ff7ae9bdaa3e6f94890bd",
+      "width": 242,
+      "height": 360
+    },
+    "images/guard/people/photo06.webp": {
+      "sha256": "712d47f60680d6ed2cfb078077ebc64cf74de2776354f9b18157f3053bf02639",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/portrait/photo01.webp": {
+      "sha256": "282f22bf39d3766c2070c3486bc536b55e792913383fce085fb0896f631a34f5",
+      "width": 294,
+      "height": 360
+    },
+    "images/guard/portrait/photo02.webp": {
+      "sha256": "a7b575957de442494595cc2c94136a1a546e28a667dd26768e2be7a5c9dd696a",
+      "width": 309,
+      "height": 360
+    },
+    "images/guard/portrait/photo03.webp": {
+      "sha256": "7c60258616be746134b0452b786dce3fcae0eda28c07dda042711f3df8501dfc",
+      "width": 239,
+      "height": 360
+    },
+    "images/guard/portrait/photo04.webp": {
+      "sha256": "30ef6cc3ea31551ec4fef94e6cb5b4479a213d9f73bcd515569c408d2721e414",
+      "width": 242,
+      "height": 360
+    },
+    "images/guard/portrait/photo05.webp": {
+      "sha256": "4010a9dbacbd97a62926a507a1b858adfb4f6ab904949f8719494f0b7288c970",
+      "width": 243,
+      "height": 360
+    },
+    "images/guard/portrait/photo06.webp": {
+      "sha256": "65513a14a326684baaad11a43e1af9121019c79d047c7b9fc5b9e39d4c2eabbe",
+      "width": 360,
+      "height": 242
+    },
+    "images/guard/portrait/photo07.webp": {
+      "sha256": "2641f038199d8933ac10ec59bbf22aaad7b296014a853549c3ce342d32e2d1cb",
+      "width": 244,
+      "height": 360
+    },
+    "images/hero.webp": {
+      "sha256": "2c39fd21a6137b234b14bbb15ae36a4798c631da3b25afa4855b1e032d6bc337",
+      "width": 3000,
+      "height": 2447
+    },
+    "images/people/photo01.webp": {
+      "sha256": "68ada4cc013af56833e49f0248a9848e2f842913771561327596dd05bc30f223",
+      "width": 1989,
+      "height": 3000
+    },
+    "images/people/photo02.webp": {
+      "sha256": "94d38d8f9761a8502278a3159f5a41942389977192dc4cac99143118dedc3335",
+      "width": 2005,
+      "height": 2506
+    },
+    "images/people/photo03.webp": {
+      "sha256": "0d5cbc85eb615c046f0816bf9d2c44fd51962ac83045369ec052fef9599f1449",
+      "width": 1862,
+      "height": 2327
+    },
+    "images/people/photo04.webp": {
+      "sha256": "5630dfd0c5518fd88372405c9302fef5d3dd3cfd28e1046406de0cee2ef1cdf5",
+      "width": 3000,
+      "height": 1989
+    },
+    "images/people/photo05.webp": {
+      "sha256": "58c89f66b64a3958b73097b15cff2085ab98f0af56ba5e2a603cd7b2a86ebfbb",
+      "width": 2017,
+      "height": 3000
+    },
+    "images/people/photo06.webp": {
+      "sha256": "8f2f8094de8dc965cfe4faa72fbe474882fcb2b2016c20a96f8a8378489f860b",
+      "width": 1989,
+      "height": 3000
+    },
+    "images/portrait/photo01.webp": {
+      "sha256": "0b351f9be28a60000aecc20f504ef0dafc7506bc9cba2876abbe2f99a297b7f0",
+      "width": 2447,
+      "height": 3000
+    },
+    "images/portrait/photo02.webp": {
+      "sha256": "cec537e6b5678c055d1cb0869ba9d6f9eae012790d5506851e442a9dd693bf61",
+      "width": 2579,
+      "height": 3000
+    },
+    "images/portrait/photo03.webp": {
+      "sha256": "d80beab9ce2c54bfd31ab20bd642978b3fba3bafdfad9163e61c4a057485bf6c",
+      "width": 1989,
+      "height": 3000
+    },
+    "images/portrait/photo04.webp": {
+      "sha256": "902ea0ca08df5e3a812afbfa4f4ee69fa31394f0437f707c674ed21dcc7f4292",
+      "width": 2018,
+      "height": 3000
+    },
+    "images/portrait/photo05.webp": {
+      "sha256": "a39ed380bb2d9864dbdf53df186a47f63763509ecd0406706531c2d67f4f17d6",
+      "width": 2022,
+      "height": 3000
+    },
+    "images/portrait/photo06.webp": {
+      "sha256": "2d33302f8564362125ec916750058353a1bbc467f9401f01d7429b6f88cece8c",
+      "width": 3000,
+      "height": 2016
+    },
+    "images/portrait/photo07.webp": {
+      "sha256": "f78d4d64d7f76980f4eff362b96669ce6be15e6cadf15e5c4b93cdb7fc3f7006",
+      "width": 2031,
+      "height": 3000
+    },
+    "images/share/doster.jpg": {
+      "sha256": "9ddd094447f3a18da04bc885c52b7312afa6313aa62f8c91ddddc10f9b11a511",
+      "width": 1200,
+      "height": 630
+    },
+    "images/share/hall.jpg": {
+      "sha256": "8697908cd976116851a75f740c457bbb240a954615605cce14f86ec0666976b9",
+      "width": 1200,
+      "height": 630
+    }
+  }
+}

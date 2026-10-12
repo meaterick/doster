@@ -88,14 +88,26 @@
     .caption.is-room .t { font: 600 1.35rem/1.15 var(--sans); font-style: normal; letter-spacing: -.02em; }
     .caption .d { display: block; margin-top: 6px; max-width: 34em; font: italic 400 .9375rem/1.45 var(--serif); color: rgba(242,241,237,.82); text-wrap: pretty; }
     body.at-entrance .caption, body.at-entrance .count, body.at-entrance .room { opacity: 0; }
+    body.at-entrance .bottom { pointer-events: none; }
+    body.at-entrance .nav { pointer-events: auto; }
     .loading { position: fixed; inset: 0; display: grid; place-items: center; background: var(--bg); z-index: 5; transition: opacity .9s var(--ease), visibility 0s; }
     .loading.is-done { opacity: 0; visibility: hidden; transition: opacity .9s var(--ease), visibility 0s linear .9s; }
     .loading.is-leaving { background: #0b0b0a; } .loading.is-leaving i { display: none; }
     .loading span { font: 500 .6875rem/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
     .loading i { display: block; width: 140px; height: 1px; margin-top: 14px; background: rgba(242,241,237,.15); overflow: hidden; }
     .loading b { display: block; height: 100%; width: 0; background: var(--fg); transition: width .4s var(--ease); }
+    .loading-help { margin: 24px 0 0; font-size: .875rem; color: var(--fg); }
+    .loading-help a { display: inline-flex; align-items: center; min-height: 44px; }
     .fallback { position: fixed; inset: 0; display: none; place-items: center; text-align: center; padding: 24px; z-index: 6; background: var(--bg); }
     .fallback.is-on { display: grid; }
+    .fallback > div { max-width: 30rem; }
+    .fallback h2 { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 500; }
+    .fallback p { line-height: 1.7; }
+    .fallback-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px; margin-top: 24px; }
+    .fallback-actions a, .fallback-actions button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px; }
+    .fallback-actions button { border: 1px solid currentColor; border-radius: 2px; }
+    .fallback :focus-visible, .loading-help a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+    .no-script { position: fixed; inset: 0; z-index: 7; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg); }
     .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     @media (max-width: 700px) {
       .bottom { grid-template-columns: 1fr auto; grid-template-areas: "cap cap" "count nav"; row-gap: 10px; }
@@ -140,12 +152,70 @@
     </div>
   </div>
 
-  <div class="loading" id="loading"><div><span>Opening the hall</span><i><b id="bar"></b></i></div></div>
-  <div class="fallback" id="fallback"><div><p>This browser can't show the 3D hall.</p><p><a href="index.html#exhibition">Back to the exhibition →</a></p></div></div>
-  <noscript><p style="position:fixed;inset:0;display:grid;place-items:center">The 3D hall needs JavaScript. <a href="index.html#exhibition">Back to the exhibition</a></p></noscript>
+  <div class="loading" id="loading"><div><span role="status">Opening the hall</span><i aria-hidden="true"><b id="bar"></b></i><p class="loading-help"><a href="index.html#exhibition">View the regular exhibition →</a></p></div></div>
+  <div class="fallback" id="fallback" role="region" aria-labelledby="fallback-title"><div><h2 id="fallback-title">The hall couldn't open.</h2><p id="fallback-message" role="alert"></p><div class="fallback-actions"><button type="button" id="retry-hall">Try again</button><a href="index.html#exhibition">View the regular exhibition →</a></div></div></div>
+  <noscript><div class="no-script"><p>The 3D hall needs JavaScript.<br><a href="index.html#exhibition">View the regular exhibition →</a></p></div></noscript>
+
+  <!-- 이 안내는 Three.js와 별도로 실행되어 모듈 다운로드 실패도 처리한다. -->
+  <script>
+  (() => {
+    const loading = document.getElementById('loading');
+    const fallback = document.getElementById('fallback');
+    const title = document.getElementById('fallback-title');
+    const message = document.getElementById('fallback-message');
+    const retry = document.getElementById('retry-hall');
+    const canvas = document.getElementById('hall');
+    const ui = document.querySelector('.ui');
+    let state = 'loading';
+    ui.inert = true; canvas.inert = true;
+    canvas.setAttribute('aria-busy', 'true');
+
+    function show(messageText, delayed) {
+      const wasVisible = fallback.classList.contains('is-on');
+      state = delayed ? 'delayed' : 'failed';
+      title.textContent = delayed ? 'The hall is taking a little longer.' : "The hall couldn't open.";
+      message.textContent = messageText;
+      loading.classList.add('is-done');
+      fallback.classList.add('is-on');
+      if (!wasVisible) retry.focus({ preventScroll: true });
+    }
+    const timer = setTimeout(() => {
+      if (state === 'loading') show('You can keep waiting, try again, or enjoy the photographs in the regular exhibition.', true);
+    }, 15000);
+    function fail(messageText) {
+      if (state === 'ready' || state === 'failed') return;
+      clearTimeout(timer);
+      show(messageText || 'Please try again, or enjoy the photographs in the regular exhibition.', false);
+    }
+    function onError(event) {
+      if (event.target === window || event.target?.id === 'hall-module') fail();
+    }
+    function onRejection() { fail(); }
+    window.addEventListener('error', onError, true);
+    window.addEventListener('unhandledrejection', onRejection);
+    retry.addEventListener('click', () => location.reload());
+    window.__dosterHallLoad = {
+      fail,
+      isReady: () => state === 'ready',
+      ready() {
+        if (state === 'failed' || state === 'ready') return;
+        clearTimeout(timer);
+        const restoreFocus = fallback.contains(document.activeElement) || loading.contains(document.activeElement);
+        state = 'ready';
+        loading.classList.add('is-done');
+        fallback.classList.remove('is-on');
+        ui.inert = false; canvas.inert = false;
+        canvas.setAttribute('aria-busy', 'false');
+        window.removeEventListener('error', onError, true);
+        window.removeEventListener('unhandledrejection', onRejection);
+        if (restoreFocus) document.getElementById('enter').focus({ preventScroll: true });
+      }
+    };
+  })();
+  </script>
 
   <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
-  <script type="module">
+  <script type="module" id="hall-module">
   import * as THREE from 'three';
   import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
   import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
@@ -165,7 +235,7 @@
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-  } catch (e) { $('fallback').classList.add('is-on'); $('loading').classList.add('is-done'); throw e; }
+  } catch (e) { window.__dosterHallLoad.fail("This browser can't show the 3D hall. You can still enjoy the regular exhibition."); throw e; }
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;     // 공간(벽·바닥)만 사진처럼 부드럽게. 사진·글은 toneMapped:false 로 웹페이지와 똑같은 색
   renderer.toneMappingExposure = 1.0;
@@ -580,7 +650,7 @@
     t.repeat.set(1, (lobby.h / SIDE) * (t.image.width / t.image.height)); t.offset.set(0, 0.14);   // 벽 비율로 잘라 한 장으로 (반복 없음)
     muralMat.map = t; muralMat.color.set(0xf4f0ea); muralMat.needsUpdate = true;
     renderer.initTexture(t); progressTick(); dirty = true;
-  }, undefined, () => progressTick());
+  }, undefined, () => progressTick(false));
   [-4.6, 0, 4.6].forEach((dz) => {
     plane(5.2, lobby.h, basic({ map: poolTex(0.55), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: .5 }), lobby.cx - HALF + 0.01, lobby.h / 2, lobby.cz + dz, rotFor(1, 0));
     lampAt(lobby.cx - HALF + 1.6, lobby.h, lobby.cz + dz, new THREE.Vector3(lobby.cx - HALF, 2.4, lobby.cz + dz));
@@ -848,12 +918,12 @@
   const loader = new THREE.TextureLoader();
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
   let firstBatch = 1, firstDone = 0, ready = false;
-  function progressTick() {
+  function progressTick(ok = true) {
+    if (!ok) window.__dosterHallLoad.fail('Some photographs could not be loaded. Please try again, or visit the regular exhibition.');
     firstDone++;
     $('bar').style.width = Math.round(Math.min(1, firstDone / firstBatch) * 100) + '%';
-    if (firstDone >= firstBatch && !ready) { ready = true; setTimeout(() => $('loading').classList.add('is-done'), 250); }
+    if (firstDone >= firstBatch && !ready) { ready = true; dirty = true; }
   }
-  setTimeout(() => { if (!ready) { ready = true; $('loading').classList.add('is-done'); } }, 9000);
   const fades = [];
   function wantTextures(center) {
     frames.forEach((f, i) => {
@@ -868,7 +938,7 @@
           if (reduceMotion) f.photoMat.opacity = 1;
           else { const t0 = performance.now(); f.photoMat.opacity = 0; fades.push((now) => { const q = Math.min(1, (now - t0) / 600); f.photoMat.opacity = q; if (q >= 1) f.photoMat.transparent = false; return q >= 1; }); }
           if (initial) progressTick(); dirty = true;
-        }, undefined, () => { f.loading = false; if (initial) progressTick(); });
+        }, undefined, () => { f.loading = false; if (initial) progressTick(false); });
       } else if (d > 10 && f.tex) {
         f.photoMat.map = null; f.photoMat.color.set(0x8f8b84); f.photoMat.transparent = true; f.photoMat.needsUpdate = true; f.tex.dispose(); f.tex = null;
       }
@@ -1024,7 +1094,7 @@
   soundBtn.addEventListener('click', () => setSound(!sfx.isOn(), true));
   {                                                         // 전에 소리를 켜 뒀다면: 첫 클릭/터치 때 다시 켬 (브라우저는 클릭 전 소리를 막음)
     let want = false; try { want = localStorage.getItem('doster-hall-sound') === '1'; } catch (e) { /* 무시 */ }
-    if (want) { const first = (e) => { if (e.target.closest && e.target.closest('#snd')) return; removeEventListener('pointerdown', first, true); removeEventListener('keydown', first, true); setSound(true, false); }; addEventListener('pointerdown', first, true); addEventListener('keydown', first, true); }
+    if (want) { const first = (e) => { if (!window.__dosterHallLoad.isReady() || (e.target.closest && e.target.closest('#snd'))) return; removeEventListener('pointerdown', first, true); removeEventListener('keydown', first, true); setSound(true, false); }; addEventListener('pointerdown', first, true); addEventListener('keydown', first, true); }
   }
 
   /* ---------- 관람 순서: 방마다 [입구 가벽(방 이름·글) → 사진들] ---------- */
@@ -1350,6 +1420,7 @@
   }
   if (FREE_WALK) {
     addEventListener('keydown', (e) => {
+      if (!window.__dosterHallLoad.isReady()) return;
       if (xrOn || e.metaKey || e.ctrlKey || e.altKey) return;
       const c = e.code, move = c === 'KeyW' || c === 'KeyA' || c === 'KeyS' || c === 'KeyD';
       if (!move && c !== 'Space' && c !== 'ShiftLeft' && c !== 'ShiftRight') return;
@@ -1372,6 +1443,7 @@
   $('prev').addEventListener('click', () => step(-1));
   $('enter').addEventListener('click', () => go(titleStop(1)));
   addEventListener('keydown', (e) => {
+    if (!window.__dosterHallLoad.isReady()) return;
     if (e.target.closest && e.target.closest('a, button') && (e.key === ' ' || e.key === 'Enter')) return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); step(1); }
     else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); step(-1); }
@@ -1380,6 +1452,7 @@
   });
   let wheelAcc = 0, wheelLock = 0;
   addEventListener('wheel', (e) => {
+    if (!window.__dosterHallLoad.isReady()) return;
     e.preventDefault();
     const now = performance.now(); if (now < wheelLock) return;
     wheelAcc += e.deltaY + e.deltaX;
@@ -1455,6 +1528,7 @@
     camera.rotation.set(tilt + pitch, heading + yaw, 0, 'YXZ');
     sfx.listen(camPos, heading + yaw);                     // 소리를 듣는 위치·방향 = 카메라
     renderer.render(scene, camera);
+    if (ready) window.__dosterHallLoad.ready();
   }
 
   /* ---------- 투명한 판들의 그리는 순서 고정: 시점이 바뀌어도 조명·글이 깜빡이지 않게 ---------- */
