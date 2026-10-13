@@ -24,3 +24,6 @@ Disallow: /
 
 User-agent: *
 Allow: /
+
+# Preferred public website
+Sitemap: https://dostervibes.kro.kr/sitemap.xml
