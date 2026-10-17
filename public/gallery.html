@@ -23,6 +23,25 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- 3D 홀 프로그램(three.js)과 로비 첫 화면에 보이는 파일은 HTML 을 읽자마자 함께 받기 시작 (차례로 기다리지 않게) -->
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/TextGeometry.js" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/FontLoader.js" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/utils/BufferGeometryUtils.js" crossorigin>
+  <link rel="preload" as="fetch" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json" crossorigin>
+  <link rel="preload" as="image" href="images/gallery/hero-wall.webp?v=ca9bb4d0" crossorigin fetchpriority="high">
+  <link rel="preload" as="fetch" href="images/gallery/models/sofa.glb?v=68b938c6" crossorigin>
+  <link rel="preload" as="image" href="images/gallery/tex/marble.webp?v=739ee886" crossorigin fetchpriority="high">
+  <link rel="preload" as="image" href="images/gallery/tex/marble_n.webp?v=d1157f31" crossorigin fetchpriority="high">
+  <link rel="preload" as="image" href="images/gallery/tex/marble_r.webp?v=55ecb485" crossorigin fetchpriority="high">
+  <link rel="preload" as="image" href="images/gallery/tex/wall.webp?v=c10c9b27" crossorigin fetchpriority="high">
+  <link rel="preload" as="image" href="images/gallery/tex/wall_n.webp?v=3d740075" crossorigin fetchpriority="high" media="not all and (pointer: coarse)">
+  <link rel="preload" as="image" href="images/gallery/tex/plaster.webp?v=1a6347b0" crossorigin fetchpriority="high">
+  <link rel="preload" as="image" href="images/gallery/tex/wool_n.webp?v=80f1cc16" crossorigin fetchpriority="high">
   <style>
     :root {
       --bg: #1c1b1a; --fg: #f2f1ed; --muted: #9b9893;
@@ -215,7 +234,6 @@
   })();
   </script>
 
-  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
   <script type="module" id="hall-module">
   import * as THREE from 'three';
   import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
@@ -261,13 +279,54 @@
     wall: 'images/gallery/tex/wall.webp?v=c10c9b27', wall_n: 'images/gallery/tex/wall_n.webp?v=3d740075', concfloor: 'images/gallery/tex/concfloor.webp?v=cf5f2815', concfloor_r: 'images/gallery/tex/concfloor_r.webp?v=41535ac8', marble: 'images/gallery/tex/marble.webp?v=739ee886', marble_n: 'images/gallery/tex/marble_n.webp?v=d1157f31', marble_r: 'images/gallery/tex/marble_r.webp?v=55ecb485', woodfloor: 'images/gallery/tex/woodfloor.webp?v=42a571b6', woodfloor_n: 'images/gallery/tex/woodfloor_n.webp?v=73388908', woodfloor_r: 'images/gallery/tex/woodfloor_r.webp?v=0839af8e', parquet: 'images/gallery/tex/parquet.webp?v=106e5436', parquet_n: 'images/gallery/tex/parquet_n.webp?v=2f8c4d0c', parquet_r: 'images/gallery/tex/parquet_r.webp?v=964e252f', carpet: 'images/gallery/tex/carpet.webp?v=44b19c2e', carpet_n: 'images/gallery/tex/carpet_n.webp?v=952983be', wool_n: 'images/gallery/tex/wool_n.webp?v=80f1cc16', leather: 'images/gallery/tex/leather.webp?v=d881df95', leather_n: 'images/gallery/tex/leather_n.webp?v=225f93d5', leather_r: 'images/gallery/tex/leather_r.webp?v=d28b7b54', linen: 'images/gallery/tex/linen.webp?v=11a98b52', linen_n: 'images/gallery/tex/linen_n.webp?v=aef9baf1', paintwood: 'images/gallery/tex/paintwood.webp?v=e7cfef8f', plaster: 'images/gallery/tex/plaster.webp?v=1a6347b0', paper: 'images/gallery/tex/paper.webp?v=07ff47dc', print: 'images/gallery/tex/print.webp?v=54b4e74c'
   };
   const texBase = {}, ANISO = Math.min(touch ? 4 : 8, renderer.capabilities.getMaxAnisotropy());   // 폰은 가볍게
+
+  /* ---------- 파일 받기: 로비 첫 화면에 보이는 것만 기다렸다가 문을 열고, 나머지는 가까운 방·사진부터 ---------- */
+  let ready = false, moving = false, opened = false, inFlight = 0, texRank = 0;
+  const firstWait = [];                                    // 문을 열기 전에 끝나야 하는 것 (벽지·로비 질감·소파·입체 글자)
+  const FIRST = new Set(['marble', 'marble_n', 'marble_r', 'wall', 'plaster', 'wool_n', ...(touch ? [] : ['wall_n'])]);   // <head> 의 preload 와 같은 목록
+  const later = [];                                        // 나머지: 한꺼번에 받으면 다 같이 느려지므로 줄을 세워 6개씩
+  function fetchLater(rank, start) {                       // rank 가 작을수록 먼저 (같으면 먼저 줄 선 것부터)
+    return new Promise((ok, no) => { later.push({ rank, run: () => start().then(ok, no) }); pump(); });
+  }
+  function pump() {
+    while (opened && inFlight < 6 && later.length) {
+      let k = 0; later.forEach((q, i) => { if (q.rank < later[k].rank) k = i; });
+      const q = later.splice(k, 1)[0]; inFlight++;
+      q.run().finally(() => { inFlight--; pump(); });
+    }
+  }
+  function loadImg(url, priority) {                        // 질감·벽지: 지금처럼 <img> 로 (모든 브라우저에서 같은 결과)
+    return new Promise((ok, no) => { const im = new Image(); im.crossOrigin = 'anonymous'; im.fetchPriority = priority; im.onload = () => ok(im); im.onerror = () => no(new Error(url)); im.src = url; });
+  }
+  // 사진: 해독(디코딩)을 브라우저 백그라운드에서 끝내 두면 GPU 로 올리는 건 몇 ms (<img> 는 올릴 때 해독까지 해서 수십 ms).
+  // Safari·옛 Firefox 는 three.js 의 GLTFLoader 와 같은 기준으로 <img> 를 씀.
+  const ua = navigator.userAgent, ffVer = /Firefox\/(\d+)/.exec(ua);
+  const BITMAP = typeof createImageBitmap === 'function' && !/^((?!chrome|android).)*safari/i.test(ua) && !(ffVer && +ffVer[1] < 98);
+  function loadPhoto(url, priority) {
+    if (!BITMAP) return loadImg(url, priority);
+    return fetch(url, { priority }).then((r) => { if (!r.ok) throw new Error(url); return r.blob(); })
+      .then((b) => createImageBitmap(b, { imageOrientation: 'flipY', premultiplyAlpha: 'none', colorSpaceConversion: 'none' }));   // <img> 를 올릴 때와 같은 색·방향
+  }
+  // GPU 로 올리기: 문이 열린 뒤에는 화면을 그리는 순간(한 장에 하나씩)에만, 걷는 중이면 멈춘 뒤에 (지금 화면에 보이는 것은 three.js 가 그릴 때 바로 올림).
+  // 파일이 도착한 순간 바로 올리면 GPU 가 바쁠 때 기다리느라 화면이 멈춤.
+  const uploads = [];
+  function upload(fn) { if (ready) uploads.push(fn); else fn(); }
+  const warm = new THREE.Scene();                          // 나중에야 생기는 재질 조합(사진에 그림이 붙은 상태 등)의 대역: 셰이더를 미리 만들어 둠
+  function warmWith(m) { const s = m.clone(); s.map = new THREE.Texture(); warm.add(new THREE.Mesh(new THREE.PlaneGeometry(), s)); }
   function tex(name, rx = 1, ry = rx, srgb = false) {
     const t = new THREE.Texture(); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); t.anisotropy = ANISO;
     if (srgb) t.colorSpace = THREE.SRGBColorSpace;
     let b = texBase[name];
     if (!b) {
       b = texBase[name] = { src: null, list: [] };
-      new THREE.ImageLoader().load(TEXURL[name], (img) => { b.src = new THREE.Source(img); b.list.forEach((x) => { x.source = b.src; x.needsUpdate = true; }); b.list = []; dirty = true; });
+      const url = TEXURL[name], got = FIRST.has(name) ? loadImg(url, 'high') : fetchLater(texRank, () => loadImg(url, 'low'));
+      got.then((img) => {
+        b.src = new THREE.Source(img); const list = b.list; b.list = [];
+        list.forEach((x) => { x.source = b.src; x.needsUpdate = true; });
+        upload(() => list.forEach((x) => renderer.initTexture(x)));   // 처음 보이는 순간이 아니라 미리 GPU 로
+        dirty = true;
+      }, () => {});                                         // 못 받으면 그 면만 어둡게 (전시장은 열림)
+      if (FIRST.has(name)) firstWait.push(got.catch(() => {}));
     }
     if (b.src) { t.source = b.src; t.needsUpdate = true; } else b.list.push(t);
     return t;
@@ -521,7 +580,8 @@
       plane(ax ? DOOR_W : WALL_T * 2 + 0.02, ax ? WALL_T * 2 + 0.02 : DOOR_W, surf(0x2a2928, { roughness: 0.6 }), d.x, 0.002, d.z, 0, -Math.PI / 2);
     }
   }
-  rooms.forEach(buildRoom);
+  rooms.forEach((r) => { texRank = (r.i - 1) * 6; buildRoom(r); });   // 바닥 질감: 관람 순서가 늦은 방일수록 나중에 받음
+  texRank = 0;
 
   function textPanel(lines, w, h, dark) {                   // 벽에 쓰는 글 (캔버스)
     return canvasTex(Math.round(w * 400), Math.round(h * 400), (g, W, H) => {
@@ -614,16 +674,17 @@
     if (sofaModel) g.add(sofaModel.clone());
     obstacles.push({ x, z, r: 1.9 }); rectSegs(x, z, 2.2, 0.85, ry);
   }
-  new GLTFLoader().load('images/gallery/models/sofa.glb?v=3b46016f', (gl) => {
+  const sofaNormal = tex('wool_n', 6);                      // 천 질감 (로비 첫 화면에 보여서 처음부터 받음)
+  firstWait.push(new Promise((done) => new GLTFLoader().load('images/gallery/models/sofa.glb?v=68b938c6', (gl) => {
     let mesh = null; gl.scene.traverse((o) => { if (o.isMesh && !mesh) mesh = o; });
-    if (!mesh) return;
+    if (!mesh) return done();
     const geo = mesh.geometry; if (!geo.attributes.normal) geo.computeVertexNormals();
     geo.computeBoundingBox(); const bb = geo.boundingBox, k = 2.2 / (bb.max.x - bb.min.x);   // 폭 2.2m
-    const map = mesh.material.map; if (map) { map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = ANISO; }
-    const mat = new THREE.MeshStandardMaterial({ map, color: 0x8c6c6a, normalMap: tex('wool_n', 6), normalScale: NS(0.45), roughness: 0.88, envMapIntensity: 0.35 });   // 천 질감
+    const map = mesh.material.map; if (map) { map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = ANISO; renderer.initTexture(map); }
+    const mat = new THREE.MeshStandardMaterial({ map, color: 0x8c6c6a, normalMap: sofaNormal, normalScale: NS(0.45), roughness: 0.88, envMapIntensity: 0.35 });   // 천 질감
     sofaModel = new THREE.Mesh(geo, mat); sofaModel.scale.setScalar(k); sofaModel.position.y = -bb.min.y * k;
-    sofaSlots.forEach((g) => g.add(sofaModel.clone())); dirty = true;
-  });
+    sofaSlots.forEach((g) => g.add(sofaModel.clone())); dirty = true; done();
+  }, undefined, () => done())));
   function bench(x, z, ry, r, len) {                        // 파노라마 앞 긴 벤치 (앉으면 좌우로 훑어보기 좋게)
     const g = new THREE.Group();
     const wood = surf(0xb08a6e, { map: tex('woodfloor', len / 2, 0.25, true), normalMap: tex('woodfloor_n', len / 2), normalScale: NS(0.5), roughness: 0.55, envMapIntensity: 0.5 });
@@ -646,12 +707,13 @@
   /* ---------- 로비: hero 사진 벽지 + 웹사이트 첫 화면 같은 입체 제목 ---------- */
   const muralMat = matte(0x8a8780);
   plane(SIDE, lobby.h, muralMat, lobby.cx - HALF + 0.004, lobby.h / 2, lobby.cz, rotFor(1, 0));
-  new THREE.TextureLoader().load('images/gallery/hero-wall.webp?v=ca9bb4d0', (t) => {
+  firstWait.push(loadImg('images/gallery/hero-wall.webp?v=ca9bb4d0', 'high').then((img) => {
+    const t = new THREE.Texture(img); t.needsUpdate = true;
     t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-    t.repeat.set(1, (lobby.h / SIDE) * (t.image.width / t.image.height)); t.offset.set(0, 0.14);   // 벽 비율로 잘라 한 장으로 (반복 없음)
+    t.repeat.set(1, (lobby.h / SIDE) * (img.width / img.height)); t.offset.set(0, 0.14);   // 벽 비율로 잘라 한 장으로 (반복 없음)
     muralMat.map = t; muralMat.color.set(0xf4f0ea); muralMat.needsUpdate = true;
-    renderer.initTexture(t); progressTick(); dirty = true;
-  }, undefined, () => progressTick(false));
+    renderer.initTexture(t); dirty = true;
+  }, () => window.__dosterHallLoad.fail('Some photographs could not be loaded. Please try again, or visit the regular exhibition.')));
   [-4.6, 0, 4.6].forEach((dz) => {
     plane(5.2, lobby.h, basic({ map: poolTex(0.55), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: .5 }), lobby.cx - HALF + 0.01, lobby.h / 2, lobby.cz + dz, rotFor(1, 0));
     lampAt(lobby.cx - HALF + 1.6, lobby.h, lobby.cz + dz, new THREE.Vector3(lobby.cx - HALF, 2.4, lobby.cz + dz));
@@ -662,7 +724,7 @@
   plane(6.4, 0.3, basic({ map: kicker, transparent: true }), muralX + 0.02, 3.55, lobby.cz + 3.4, ryMural);
   const roles = textPanel([{ text: 'PHOTOGRAPHER  /  FILMMAKER  /  DEVELOPER', font: '500 80px -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif', gap: 95 }], 5.6, 0.3, true);
   plane(5.6, 0.3, basic({ map: roles, transparent: true }), muralX + 0.02, 1.05, lobby.cz + 3.8, ryMural);
-  new FontLoader().load('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json', (font) => {
+  firstWait.push(new Promise((done) => new FontLoader().load('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json', (font) => {
     const geo = new TextGeometry('DOSTER', { font, size: 1.55, height: 0.16, curveSegments: 6, bevelEnabled: true, bevelThickness: 0.015, bevelSize: 0.012, bevelSegments: 2 });
     geo.computeBoundingBox();
     const txt = new THREE.Mesh(geo, surf(0xf4f2ee, { roughness: 0.55, envMapIntensity: 0.6 }));
@@ -673,8 +735,8 @@
       sh.rotation.y = ryMural; sh.scale.set(1, 1, 0.01);
       sh.position.set(muralX + 0.012, 1.45 - k * 0.035, lobby.cz + 6.6 + k * 0.012); scene.add(sh);
     }
-    dirty = true;
-  });
+    dirty = true; done();
+  }, undefined, () => done())));
   // 처음 방 뒤쪽 문: 웹사이트로 돌아가기
   const site = lobby.doors.S;
   const exitPanel = box(DOOR_W - 0.1, DOOR_H - 0.05, 0.06, surf(0x1d1c1b, { roughness: 0.6 }), site.x, (DOOR_H - 0.05) / 2, site.z + 0.05, 0, true);
@@ -711,8 +773,11 @@
     plane(ABOUT.textW, ABOUT.textH, basic({ map: tx, transparent: true }), ABOUT.textX, ABOUT.textY, zf, ry);
     const pw = ABOUT.picW, ph = pw / 1.25, m = 0.1, fw = pw + 2 * (m + 0.035);
     const picMat = buildFrame(ABOUT.picX, ABOUT.z, 0, -1, ABOUT.picY, pw, ph, m, m, { white: true }).photoMat;
-    picMat.transparent = false;
-    new THREE.TextureLoader().load('images/gallery/about.webp?v=b16d0ea2', (t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = ANISO; picMat.map = t; picMat.color.set(0xffffff); picMat.needsUpdate = true; dirty = true; });
+    picMat.transparent = false; warmWith(picMat);
+    fetchLater(3, () => loadImg('images/gallery/about.webp?v=b16d0ea2', 'low')).then((img) => {
+      const t = new THREE.Texture(img); t.needsUpdate = true; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = ANISO;
+      picMat.map = t; picMat.color.set(0xffffff); picMat.needsUpdate = true; upload(() => renderer.initTexture(t)); dirty = true;
+    }, () => {});
     [[ABOUT.textX, ABOUT.textY, ABOUT.textW + 1.2], [ABOUT.picX, ABOUT.picY, fw + 1.6]].forEach(([x, y, w]) => {
       const top = lobby.h - 0.25, bottom = 0.15, hp = top - bottom;
       plane(w, hp, basic({ map: poolTex((top - y) / hp), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.9 }), x, bottom + hp / 2, ABOUT.z - 0.008, ry);
@@ -916,35 +981,34 @@
   const photoMeshes = frames.map((f) => f.photo);
 
   /* ---------- 사진 텍스처: 가까운 것만 불러오고, 멀어지면 내림 ---------- */
-  const loader = new THREE.TextureLoader();
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
-  let firstBatch = 1, firstDone = 0, ready = false;
-  function progressTick(ok = true) {
-    if (!ok) window.__dosterHallLoad.fail('Some photographs could not be loaded. Please try again, or visit the regular exhibition.');
-    firstDone++;
-    $('bar').style.width = Math.round(Math.min(1, firstDone / firstBatch) * 100) + '%';
-    if (firstDone >= firstBatch && !ready) { ready = true; dirty = true; }
-  }
+  let lastCenter = 0;
   const fades = [];
+  function dropPhoto(f) { f.photoMat.map = null; f.photoMat.color.set(0x8f8b84); f.photoMat.transparent = true; f.photoMat.needsUpdate = true; f.tex.dispose(); f.tex = null; }
   function wantTextures(center) {
+    lastCenter = center;
     frames.forEach((f, i) => {
       const d = Math.min(Math.abs(i - center), frames.length - Math.abs(i - center));   // 고리 구조라 끝과 처음도 가까움
       if (d <= 5 && !f.tex && !f.loading) {
-        f.loading = true; const initial = !ready; if (initial) firstBatch++;
-        loader.load(f.w.tex, (t) => {
+        f.loading = true;
+        fetchLater(d, () => loadPhoto(f.w.tex, d <= 1 ? 'high' : 'low')).then((img) => {
           f.loading = false;
+          const bitmap = !!img.close;                       // ImageBitmap: 해독할 때 이미 뒤집어 둠
+          if (renderer.getContext().isContextLost()) { if (bitmap) img.close(); return; }   // GPU 가 잠시 끊긴 사이에 도착: 이어지면 다시 받음
+          const t = new THREE.Texture(img); t.needsUpdate = true; t.flipY = !bitmap;
           t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = Math.min(8, maxAniso);
-          renderer.initTexture(t);                         // 미리 GPU로 올려 걷는 중 끊김 방지
           f.tex = t; f.photoMat.map = t; f.photoMat.color.set(0xffffff); f.photoMat.needsUpdate = true;
+          upload(() => { if (f.tex === t) renderer.initTexture(t); if (bitmap) img.close(); });   // 올린 뒤 해독본은 바로 버림 (폰 메모리)
           if (reduceMotion) f.photoMat.opacity = 1;
           else { const t0 = performance.now(); f.photoMat.opacity = 0; fades.push((now) => { const q = Math.min(1, (now - t0) / 600); f.photoMat.opacity = q; if (q >= 1) f.photoMat.transparent = false; return q >= 1; }); }
-          if (initial) progressTick(); dirty = true;
-        }, undefined, () => { f.loading = false; if (initial) progressTick(false); });
-      } else if (d > 10 && f.tex) {
-        f.photoMat.map = null; f.photoMat.color.set(0x8f8b84); f.photoMat.transparent = true; f.photoMat.needsUpdate = true; f.tex.dispose(); f.tex = null;
-      }
+          dirty = true;
+        }, () => { f.loading = false; });
+      } else if (d > 10 && f.tex) dropPhoto(f);
     });
   }
+  // 폰에서 GPU 가 잠시 끊겼다 이어지면: 해독본을 버린 사진은 다시 받음 (나머지는 three.js 가 알아서 다시 올림)
+  canvas.addEventListener('webglcontextlost', () => frames.forEach((f) => { if (f.tex) dropPhoto(f); }));
+  canvas.addEventListener('webglcontextrestored', () => { wantTextures(lastCenter); dirty = true; });
 
   /* ---------- 소리: 전부 브라우저에서 직접 합성 (음원 파일 없음) ----------
      공간 소리 · 아주 작은 히터 · 방 울림 · 배경음악(피아노). 음악은 이어폰 속이 아니라 각 방 천장 스피커에서 나와 방에 울리는 것처럼 */
@@ -1513,8 +1577,63 @@
     dirty = true;
   }
   addEventListener('resize', resize); resize();
+
+  /* 보이는 방만 그리기: 지금 서 있는 방 + 열린 문 너머로 실제로 보이는 방 (벽 뒤 방의 액자·사진·글씨·가구는 GPU 에 보내지 않음) */
+  const roomGroups = rooms.map(() => { const g = new THREE.Group(); scene.add(g); return g; });
+  let sortedTo = 0;
+  function sortRooms() {                                    // 물건마다 놓인 칸의 방 묶음으로 (늦게 들어온 소파·입체 글자도)
+    scene.children.slice(sortedTo).forEach((o) => {
+      if (o === rig || o.isLight || o.isInstancedMesh || roomGroups.includes(o) || solids.includes(o)) return;   // 카메라·조명·모든 방에 걸친 펜스 기둥은 그대로. 벽도: 벽 이음새의 아주 작은 틈으로 옆 방 벽이 비치는 것까지 지금과 같게
+      const r = rooms.find((q) => q.col === Math.round(o.position.x / CELL) && q.row === Math.round(o.position.z / CELL));
+      if (r) roomGroups[r.i].add(o);
+    });
+    sortedTo = scene.children.length;
+  }
+  const links = rooms.map(() => []);                       // 방 사이 문 구멍 (양쪽 벽 두께까지 덮는 상자)
+  rooms.forEach((r) => {
+    const d = r.doors[r.exit], ax = isX(r.exit), w = DOOR_W / 2 + 0.05, t = WALL_T + 0.05, to = (r.i + 1) % N_ROOMS;
+    const box = new THREE.Box3(new THREE.Vector3(d.x - (ax ? w : t), 0, d.z - (ax ? t : w)), new THREE.Vector3(d.x + (ax ? w : t), DOOR_H + 0.05, d.z + (ax ? t : w)));
+    links[r.i].push({ to, box }); links[to].push({ to: r.i, box });
+  });
+  const frustum = new THREE.Frustum(), viewProj = new THREE.Matrix4(), corner = new THREE.Vector3(), seen = [];
+  function through(box, win) {                              // 문 구멍이 화면에 차지하는 네모 ∩ 지금까지 열린 창 (안 보이면 null)
+    if (!frustum.intersectsBox(box)) return null;
+    let x0 = 1, y0 = 1, x1 = -1, y1 = -1;
+    for (let k = 0; k < 8; k++) {
+      corner.set(k & 1 ? box.max.x : box.min.x, k & 2 ? box.max.y : box.min.y, k & 4 ? box.max.z : box.min.z).applyMatrix4(camera.matrixWorldInverse);
+      if (corner.z > -camera.near) return win;              // 문 구멍이 눈 옆·뒤로 걸침 (문턱을 지나는 중): 창을 좁히지 않음
+      corner.applyMatrix4(camera.projectionMatrix);
+      x0 = Math.min(x0, corner.x); x1 = Math.max(x1, corner.x); y0 = Math.min(y0, corner.y); y1 = Math.max(y1, corner.y);
+    }
+    x0 = Math.max(x0, win[0]); y0 = Math.max(y0, win[1]); x1 = Math.min(x1, win[2]); y1 = Math.min(y1, win[3]);
+    return x0 < x1 && y0 < y1 ? [x0, y0, x1, y1] : null;
+  }
+  function see(i, win, from, depth) {
+    seen[i] = true;
+    if (depth < N_ROOMS) links[i].forEach((l) => { const w = l.to !== from && through(l.box, win); if (w) see(l.to, w, i, depth + 1); });
+  }
+  function cullRooms() {
+    if (scene.children.length !== sortedTo) sortRooms();
+    camera.updateMatrixWorld();
+    frustum.setFromProjectionMatrix(viewProj.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
+    seen.length = 0;
+    const m = HALF + 0.35, p = camera.position, at = rooms.filter((r) => Math.abs(p.x - r.cx) <= m && Math.abs(p.z - r.cz) <= m);   // 문턱 위에서는 두 방 모두
+    at.forEach((r) => see(r.i, [-1, -1, 1, 1], -1, 0));
+    roomGroups.forEach((g, i) => { g.visible = !at.length || !!seen[i]; });
+  }
+  function warmRooms() {                                    // 로딩 화면 뒤에서 한 번: 모든 방의 모양·글씨 판을 GPU 에 미리 올림 (1px 만 그려서 가볍게)
+    const all = [];
+    scene.traverse((o) => { if (o.isMesh && o.frustumCulled) { o.frustumCulled = false; all.push(o); } });
+    roomGroups.forEach((g) => { g.visible = true; });
+    renderer.setScissorTest(true); renderer.setScissor(0, 0, 1, 1);
+    renderer.render(scene, camera);
+    renderer.setScissorTest(false);
+    all.forEach((o) => { o.frustumCulled = true; });
+  }
+
   function frame(now) {
-    if (xrOn) { xrFrame(now); renderer.render(scene, camera); return; }
+    if (xrOn) { if (uploads.length) uploads.shift()(); xrFrame(now); renderer.render(scene, camera); return; }   // VR: 한 장에 하나씩 계속 올림
+    if (!ready) return;                                     // 로딩 화면 뒤에서는 그리지 않음 (준비가 끝나면 한 번에)
     if (tween && tween(now)) {
       tween = null;
       if (pending) { const q = pending; pending = null; q(); }
@@ -1523,13 +1642,16 @@
     if (scan && now >= scan.t0) { const q = (now - scan.t0) / scan.ms; yaw = q >= 1 ? 0 : scan.A * Math.sin(2 * Math.PI * smooth(q)); if (q >= 1) scan = null; dirty = true; }
     for (let i = fades.length - 1; i >= 0; i--) if (fades[i](now)) fades.splice(i, 1);
     const walkingFree = free ? freeStep(now) : false;
+    moving = !!(tween || walkingFree || scan || (drag && drag.moved));
+    if (uploads.length && !moving) uploads.shift()();       // 멈춰 있을 때 하나씩 GPU 로
     if (!dirty && !tween && !fades.length && !scan && !walkingFree) return;
     dirty = false;
     camera.position.copy(camPos);
     camera.rotation.set(tilt + pitch, heading + yaw, 0, 'YXZ');
     sfx.listen(camPos, heading + yaw);                     // 소리를 듣는 위치·방향 = 카메라
+    cullRooms();
     renderer.render(scene, camera);
-    if (ready) window.__dosterHallLoad.ready();
+    window.__dosterHallLoad.ready();
   }
 
   /* ---------- 투명한 판들의 그리는 순서 고정: 시점이 바뀌어도 조명·글이 깜빡이지 않게 ---------- */
@@ -1588,6 +1710,7 @@
       renderer.xr.setReferenceSpaceType('local-floor');
       await renderer.xr.setSession(session);
       xrOn = true; scan = null; tween = null; pending = null; yaw = 0; pitch = 0;
+      roomGroups.forEach((g) => { g.visible = true; });     // VR 은 두 눈 시야가 따로라 방 가리기 없이 모두 그림
       document.body.classList.add('in-xr');
       camera.position.set(0, 0, 0); camera.quaternion.identity();
       xrPlace({ pos: new THREE.Vector3(camPos.x, 0, camPos.z), yaw: heading, room: here.room, door: here.door });
@@ -1606,7 +1729,22 @@
     navigator.xr.isSessionSupported('immersive-vr').then((ok) => { if (ok) { $('vr').hidden = false; $('vr').addEventListener('click', enterXR); } }).catch(() => {});
   }
 
-  wantTextures(0);
+  /* ---------- 문 열기: 첫 화면 파일이 다 오면 → 셰이더를 미리 만들고 모든 방을 GPU 에 올려 둔 뒤 → 로딩 화면을 걷음 ---------- */
+  wantTextures(0);                                          // (실제로 받는 건 첫 화면 파일이 다 온 뒤부터)
+  sortRooms();
+  warmWith(frames[0].photoMat);                             // 사진에 그림이 붙어 서서히 나타나는 상태
+  const parallel = renderer.extensions.has('KHR_parallel_shader_compile');
+  function shaders() {                                      // 셰이더 미리 만들기 (되는 브라우저는 백그라운드에서 여러 개 동시에)
+    if (!parallel) { renderer.compile(scene, camera); renderer.compile(warm, camera, scene); return Promise.resolve(); }
+    return Promise.race([renderer.compileAsync(scene, camera).then(() => renderer.compileAsync(warm, camera, scene)), new Promise((ok) => setTimeout(ok, 5000))]);
+  }
+  const shadersEarly = shaders();                           // 파일을 기다리는 동안 미리
+  let firstGot = 0;
+  firstWait.forEach((p) => p.then(() => { $('bar').style.width = Math.round(++firstGot / (firstWait.length + 1) * 100) + '%'; }));
+  Promise.all(firstWait).then(() => { opened = true; pump(); return shadersEarly; })
+    .then(shaders)                                          // 한 번 더: 늦게 들어온 소파·입체 글자
+    .catch(() => {})                                        // 미리 만들기가 안 되면 예전처럼 처음 보일 때 만듦 (전시장은 그대로 열림)
+    .then(() => { warmRooms(); ready = true; dirty = true; $('bar').style.width = '100%'; });
   renderer.setAnimationLoop(frame);
   window.__hall = { free: () => (free ? { y: +free.y.toFixed(2), room: free.room } : null), key: (c, down) => { const ev = new KeyboardEvent(down ? 'keydown' : 'keyup', { code: c, bubbles: true }); dispatchEvent(ev); }, closeToggle: () => { close = !close; go(current, 1500); }, look: (y, p) => { heading = y; tilt = p || 0; yaw = 0; pitch = 0; dirty = true; }, go: (i) => go(i), door: (a) => goDoor({ a, b: (a + 1) % N_ROOMS }), stops: () => stops.map((s) => s.kind === 'title' ? 'T:' + s.r.key : s.kind === 'about' ? 'A:about' : s.f.w.cap[0]), sit: (k) => sit(sofaSeats[k] || sofaParts[k].userData.seat), state: () => ({ current, close, seated, scan: !!scan, yaw: +yaw.toFixed(3), room: here.room, frames: frames.length, loaded: frames.filter((f) => f.tex).length, cam: camPos.toArray().map((v) => +v.toFixed(2)), heading: +heading.toFixed(3), moving: !!tween }), frames: () => frames.map((f) => [f.r.key, f.w.cap[0], +f.p.x.toFixed(1), +f.p.z.toFixed(1), +f.fw.toFixed(2), +f.fh.toFixed(2)]) };
     </script>
