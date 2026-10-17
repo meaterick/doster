@@ -6,9 +6,9 @@ Each public/images/<category>/<photo>.webp gets public/images/phone/<category>/<
 The originals are only read, never changed. EXIF (copyright, artist, description)
 is copied from the original; GPS is never written.
 
-index.html serves these copies to phones through srcset; tablets, desktops and the
-photo viewer keep the originals. After running this, look at every new copy and add
-only the copies you checked to scripts/photo-safety-manifest.json.
+index.html serves these copies through srcset only on screens up to 600 px wide;
+PCs, tablets and the photo viewer keep the originals. After running this, look at
+every new copy and add only the copies you checked to scripts/photo-safety-manifest.json.
 
 Usage: python3 scripts/make-phone-copies.py images/people/photo01.webp [...]
        (paths relative to public/; no arguments = every photo index.html uses)
