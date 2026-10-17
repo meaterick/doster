@@ -81,6 +81,30 @@ class PhotoSafetyTests(unittest.TestCase):
         self.record()
         self.assert_failure('missing EXIF copyright')
 
+    def test_reviewed_phone_copy_passes_without_its_own_guard(self):
+        self.photo('images/phone/people/example.webp', (32, 24))
+        self.record()
+        self.write('index.html', META + '<img src="images/people/example.webp" srcset="images/phone/people/example.webp 32w, images/people/example.webp 64w">')
+        self.assertEqual(SAFETY.check(self.root), [])
+
+    def test_unreviewed_phone_copy_fails(self):
+        self.photo('images/phone/people/example.webp', (32, 24))
+        self.assert_failure('new/changed image')
+
+    def test_phone_copy_without_original_fails(self):
+        self.photo('images/phone/people/orphan.webp', (32, 24))
+        self.record()
+        self.assert_failure('phone copy has no original')
+
+    def test_phone_copy_not_smaller_fails(self):
+        self.photo('images/phone/people/example.webp', (64, 48))
+        self.record()
+        self.assert_failure('phone copy must be a smaller copy')
+
+    def test_missing_phone_copy_in_srcset_fails(self):
+        self.write('index.html', META + '<img src="images/people/example.webp" srcset="images/phone/people/example.webp 32w">')
+        self.assert_failure('missing or unsafe asset images/phone/people/example.webp')
+
     def test_missing_guard_fails(self):
         (self.root / 'images/guard/people/example.webp').unlink()
         self.assert_failure('missing watermarked guard')

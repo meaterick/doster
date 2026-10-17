@@ -384,7 +384,7 @@
     }
     function setPhoto(img) {
       var list = viewables();
-      vImg.src = img.currentSrc || img.src;
+      vImg.src = img.src;                           // 크게 보기는 항상 원본 (폰 화면용 작은 사본 아님)
       vImg.alt = img.alt || '';
       var gs = guardSrc(img);
       if (gs) vGuard.src = gs; else vGuard.removeAttribute('src');
@@ -402,7 +402,7 @@
     function preload(list) {                       // 양옆 사진을 미리 받아 둠
       [current - 1, current + 1, current + 2].forEach(function (k) {
         var im = list[(k + list.length) % list.length];
-        if (im) predecode(im.currentSrc || im.src);
+        if (im) predecode(im.src);
       });
     }
     function show(i, dir, fromX) {                 // dir: 1 다음, -1 이전 / fromX: 손가락으로 끌던 위치
