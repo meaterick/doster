@@ -105,6 +105,15 @@ def check(root):
             errors.append(f'{name}: reviewed image is missing or invalid; review its record and references.')
 
     for name, size in photos.items():
+        if name.startswith('images/phone/'):
+            # Phone copy: shown instead of its original on small screens and protected by the original's guard.
+            original = 'images/' + name.removeprefix('images/phone/')
+            original_size = photos.get(original)
+            if original_size is None:
+                errors.append(f'{name}: phone copy has no original {original}.')
+            elif size[0] >= original_size[0] or abs(size[0] / size[1] - original_size[0] / original_size[1]) > 0.01:
+                errors.append(f'{name}: phone copy must be a smaller copy of {original} with the same shape.')
+            continue
         if name.startswith(('images/gallery/', 'images/guard/', 'images/share/')):
             continue
         guard = 'images/guard/' + name.removeprefix('images/')
