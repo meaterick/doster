@@ -8,7 +8,7 @@ import sys
 import tempfile
 import unittest
 
-from PIL import Image
+from PIL import Image, ImageCms
 
 REPO = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('photo_safety', REPO / 'scripts/check-photo-safety.py')
@@ -35,13 +35,13 @@ class PhotoSafetyTests(unittest.TestCase):
     def write(self, name, text):
         (self.root / name).write_text(text)
 
-    def photo(self, name, size, copyright=True, color='red'):
+    def photo(self, name, size, copyright=True, color='red', icc=None):
         path = self.root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         exif = Image.Exif()
         if copyright:
             exif[33432] = SAFETY.COPYRIGHT
-        Image.new('RGB', size, color).save(path, format='WEBP', exif=exif)
+        Image.new('RGB', size, color).save(path, format='WEBP', exif=exif, icc_profile=icc)
 
     def record(self):
         assets = {}
@@ -100,6 +100,16 @@ class PhotoSafetyTests(unittest.TestCase):
         self.photo('images/phone/people/example.webp', (64, 48))
         self.record()
         self.assert_failure('phone copy must be a smaller copy')
+
+    def test_phone_copy_without_original_colour_profile_fails(self):
+        icc = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
+        self.photo('images/people/example.webp', (64, 48), icc=icc)
+        self.photo('images/phone/people/example.webp', (32, 24))
+        self.record()
+        self.assert_failure('must keep the colour profile')
+        self.photo('images/phone/people/example.webp', (32, 24), icc=icc)
+        self.record()
+        self.assertFalse(any('colour profile' in e for e in SAFETY.check(self.root)))
 
     def test_missing_phone_copy_in_srcset_fails(self):
         self.write('index.html', META + '<img src="images/people/example.webp" srcset="images/phone/people/example.webp 32w">')

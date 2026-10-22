@@ -39,12 +39,16 @@ def make(name):
         if image.width <= PHONE_WIDTH:
             print(f'skip {name}: already {image.width} px wide')
             return
+        icc = image.info.get('icc_profile')
         exif = image.getexif()
         exif.pop(34853, None)  # GPS
         height = round(image.height * PHONE_WIDTH / image.width)
         small = image.convert('RGB').resize((PHONE_WIDTH, height), Image.LANCZOS)
     target.parent.mkdir(parents=True, exist_ok=True)
-    small.save(target, 'WEBP', quality=QUALITY, method=6, exif=exif.tobytes())
+    # Keep the original's colour profile (Adobe RGB, ProPhoto, Display P3...): without it browsers read
+    # the pixels as sRGB and the small copy shows different colours from the original.
+    small.save(target, 'WEBP', quality=QUALITY, method=6, exif=exif.tobytes(),
+               icc_profile=icc or None)
     print(f'{name} -> {target.relative_to(PUBLIC)} ({PHONE_WIDTH}x{height}, '
           f'{source.stat().st_size // 1024} KB -> {target.stat().st_size // 1024} KB)')
 
