@@ -48,6 +48,7 @@ def check(root):
     root = root / 'public' if (root / 'public').is_dir() else root
     approved = manifest['assets']
     photos = {}
+    profiles = {}
     for path in sorted(root.rglob('*')):
         relative = path.relative_to(root)
         if any(p in {'.git', '.venv', 'node_modules', '__pycache__'} for p in relative.parts):
@@ -87,6 +88,7 @@ def check(root):
                 if image.format != expected_format:
                     errors.append(f'{name}: file contents do not match its web format.')
                 photos[name] = image.size
+                profiles[name] = image.info.get('icc_profile') or None
                 if entry and (entry.get('width'), entry.get('height')) != image.size:
                     errors.append(f'{name}: dimensions do not match the reviewed export.')
                 exif = image.getexif()
@@ -113,6 +115,8 @@ def check(root):
                 errors.append(f'{name}: phone copy has no original {original}.')
             elif size[0] >= original_size[0] or abs(size[0] / size[1] - original_size[0] / original_size[1]) > 0.01:
                 errors.append(f'{name}: phone copy must be a smaller copy of {original} with the same shape.')
+            elif profiles.get(name) != profiles.get(original):
+                errors.append(f'{name}: phone copy must keep the colour profile of {original}, or its colours change.')
             continue
         if name.startswith(('images/gallery/', 'images/guard/', 'images/share/')):
             continue
